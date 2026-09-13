@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Espacial Interactivo 3D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- FONDO DE ESTRELLAS CON ANIMACIÓN DE OPACIDAD VARIABLE -->
+    <div class="stars-container">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+    </div>
+
+    <!-- BARRA DE BÚSQUEDA RÁPIDA -->
+    <header class="search-container">
+        <input type="text" id="search-bar" placeholder="🔍 Buscar cuerpo celeste (ej: Tierra, Agujero Negro, Cometa)..." oninput="filterSearch()">
+    </header>
+
+    <!-- SIDEBAR INTERACTIVO DESPLEGABLE -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3> ORBIT</h3>
+        </div>
+        <ul class="sidebar-menu" id="menu-list">
+            <li class="menu-section" data-section="estrellas">Estrellas y Núcleos</li>
+            <li data-name="sol"><button onclick="selectObject('sol')">El Sol</button></li>
+            <li data-name="agujero negro"><button onclick="selectObject('agujero')">Agujero Negro</button></li>
+            
+            <li class="menu-section" data-section="planetas">Planetas Interiores</li>
+            <li data-name="mercurio"><button onclick="selectObject('mercurio')">Mercurio</button></li>
+            <li data-name="venus"><button onclick="selectObject('venus')">Venus</button></li>
+            <li data-name="tierra"><button onclick="selectObject('tierra')">Tierra</button></li>
+            <li data-name="marte"><button onclick="selectObject('marte')">Marte</button></li>
+
+            <li class="menu-section" data-section="gigantes">Planetas Exteriores</li>
+            <li data-name="jupiter"><button onclick="selectObject('jupiter')">Júpiter</button></li>
+            <li data-name="saturno"><button onclick="selectObject('saturno')">Saturno</button></li>
+
+            <li class="menu-section" data-section="menores">Cuerpos Menores y Estructuras</li>
+            <li data-name="luna"><button onclick="selectObject('luna')">La Luna</button></li>
+            <li data-name="cometa halley"><button onclick="selectObject('cometa')">Cometa Halley</button></li>
+            <li data-name="cinturon de asteroides"><button onclick="selectObject('asteroides')">Cinturón de Asteroides</button></li>
+            <li data-name="nebulosa de orion"><button onclick="selectObject('nebulosa')">Nebulosa de Orión</button></li>
+        </ul>
+    </nav>
+
+    <!-- ESCENARIO PRINCIPAL (SISTEMA SOLAR / COSMOS) -->
+    <main class="space-stage" id="space-stage">
+        <div class="solar-system" id="solar-system">
+            <!-- Sol Esférico 3D -->
+            <div class="sun sphere3d" onclick="selectObject('sol')" style="background-image: url('https://unsplash.com');"></div>
+            
+            <!-- Órbitas y Planetas con texturas simuladas -->
+            <div class="orbit mercury-orbit">
+                <div class="planet mercury sphere3d" onclick="stopPropagation(event); selectObject('mercurio')" style="background-image: url('https://unsplash.com');"></div>
+            </div>
+            <div class="orbit venus-orbit">
+                <div class="planet venus sphere3d" onclick="stopPropagation(event); selectObject('venus')" style="background-image: url('https://unsplash.com');"></div>
+            </div>
+            <div class="orbit earth-orbit">
+                <div class="planet earth sphere3d" onclick="stopPropagation(event); selectObject('tierra')" style="background-image: url('https://unsplash.com');"></div>
+            </div>
+            <div class="orbit mars-orbit">
+                <div class="planet mars sphere3d" onclick="stopPropagation(event); selectObject('marte')" style="background-image: url('https://unsplash.com');"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- INTERFAZ DE ZOOM E INFORMACIÓN (MODAL INTERACTIVO DE DETALLES) -->
+    <div class="zoom-overlay" id="zoom-overlay">
+        <button class="back-btn" onclick="closeZoom()">➔ Volver al Mapa Estelar</button>
+        
+        <div class="interactive-viewer">
+            <!-- Visor de Imágenes 3D Rotativo -->
+            <div class="image-viewer-3d" onclick="rotateImage()">
+                <img id="current-cosmic-img" src="" alt="Cuerpo Celeste">
+                <div class="rotation-hint">🔄 Haz clic sobre la imagen para rotar vista (Sentido Horario)</div>
+            </div>
+
+            <!-- Cuadro de texto interactivo con transparencia -->
+            <section class="glass-info-panel">
+                <h2 id="info-title">Objeto</h2>
+                <div class="badge" id="info-type">Categoría</div>
+                <p id="info-text">Información detallada...</p>
+                <div class="object-data">
+                    <div><strong>Distancia:</strong> <span id="data-dist">-</span></div>
+                    <div><strong>Temperatura:</strong> <span id="data-temp">-</span></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- CONTROLADOR INTERACTIVO (JAVASCRIPT) -->
+    <script>
+        // Base de Datos del Universo Completo 
+        const universeData = {
+            sol: {
+                title: "El Sol", type: "Estrella de Tipo Espectral G2V",
+                text: "Nuestra estrella es una esfera casi perfecta de plasma de alta temperatura, tejida por campos magnéticos. Sostiene mecánicamente todo el sistema planetario.",
+                dist: "0 UA (Centro)", temp: "5,500 °C (Superficie)",
+                images: [
+                    "https://unsplash.com",
+                    "https://unsplash.com"
+                ]
+            },
+            mercurio: {
+                title: "Mercurio", type: "Planeta Rocoso",
+                text: "El planeta más cercano al Sol. Es apenas mayor que la Luna terrestre. Carece casi por completo de atmósfera, exponiéndose a impactos constantes de meteoritos.",
+                dist: "0.39 UA del Sol", temp: "-180 °C a 430 °C",
+                images: [
+                    "https://unsplash.com",
+                    "https://unsplash.com"
+                ]
+            },
+            venus: {
+                title: "Venus", type: "Planeta Rocoso",
+                text: "Gemelo infernal de la Tierra debido a su tamaño similar pero envuelto en una atmósfera sofocante de dióxido de carbono que genera presiones y calores extremos.",
+                dist: "0.72 UA del Sol", temp: "465 °C constante",
+                images: [
+                    "https://unsplash.com",
+                    "https://unsplash.com"
+                ]
+            },
+            tierra: {
+                title: "La Tierra", type: "Planeta Rocoso Habitável",
+                text: "El único oasis biológico conocido en el cosmos. Su escudo magnético y su atmósfera rica en nitrógeno y oxígeno protegen una vasta biosfera dependiente del agua.",
+                dist: "1.00 UA (150M km)", temp: "15 °C promedio",
+                images: <img src="img/tierra.png " alt=" "> 
+                </img>
+                
+            },
+            marte: {
+                title: "Marte", type: "Planeta Rocoso",
+                text: "Un desierto gélido rico en óxido de hierro. Aloja llanuras masivas y los cañones más profundos conocidos. Meta principal de la exploración astrobiológica actual.",
+                dist: "1.52 UA del Sol", temp: "-62 °C",
+                images: [
+                    "https://unsplash.com",
+                    "https://unsplash.com"
+                ]
+            },
+            jupiter: {
+                title: "Júpiter", type: "Gigante Gaseoso",
+                text: "Un titán compuesto de hidrógeno y helio. Ejerce una influencia gravitatoria colosal, actuando como un escudo protector para los planetas interiores.",
+                dist: "5.20 UA del Sol", temp: "-108 °C",
+                images: [
+                    "https://unsplash.com",
+                    "https://unsplash.com"
+                ]
+            },
+            saturno: {
+                title: "Saturno", type: "Gigante Gaseoso Anillado",
+                text: "Reconocido por sus complejos y resplandecientes anillos formados por fragmentos de hielo y rocas espaciales que orbitan de forma sincronizada.",
+                dist: "9.58 UA del Sol", temp: "-139 °C",
+                images: [
+                    "https://unsplash.com",
+                    "https://unsplash.com"
+                ]
+            },
+            luna: {
+                title: "La Luna", type: "Satélite Natural",
+                text: "Socio gravitacional de la Tierra, responsable de estabilizar la inclinación de nuestro eje planetario y producir los ciclos de mareas oceánicas.",
+                dist: "384,400 km de la Tierra", temp: "-130 °C a 120 °C",
+                images: [
+                "unsplash.com",
+                "unsplash.com"
+                ]
+  
+            },
+            
+            agujero: {
+                title: "Agujero Negro Sagitario A*", type: "Singularidad Espaciotemporal",
+                text: "Una región del espacio con una densidad tan extrema que colapsa el tejido mismo del espaciotiempo. Ni la radiación electromagnética puede escapar de su horizonte de eventos.",
+                dist: "26,000 Años Luz (Centro Galáctico)", temp: "Cercano al Cero Absoluto",
+                images: [
+                "unsplash.com",
+                "unsplash.com"
+                ]
+            },
+            cometa: {
+                title: "Cometa 1P/Halley", type: "Cuerpo de Hielo Primigenio",
+                text: "Un cuerpo celeste compuesto de hielos volátiles, polvo y rocas. Desarrolla una cola masiva y brillante al aproximarse al Sol por sublimación.",
+                dist: "Órbita Elíptica Variable", temp: "Variable (-200°C base)",
+                images: [
+                "unsplash.com",
+                "unsplash.com"
+                ]
+            },
+            asteroides: {
+                title: "Cinturón de Asteroides", type: "Escombros Protoplanetarios",
+                text: "Un anillo de escombros cósmicos situado entre Marte y Júpiter. Contiene restos de la formación fallida de un planeta primitivo debido a fuerzas de marea.",
+                dist: "2.2 a 3.2 UA del Sol", temp: "-73 °C promedio",
+                images: [
+                "unsplash.com",
+                "unsplash.com"
+                ]
+            },
+            nebulosa: {
+                title: "Nebulosa de Orión (M42)", type: "Nube Interestelar HII",
+                text: "Una inmensa guardería estelar situada en la Vía Láctea. El gas ionizado y el polvo interestelar colapsan bajo su propia gravedad para dar origen a nuevos sistemas solares.",
+                dist: "1,344 Años Luz", temp: "10,000 °C (Gas Ionizado)",
+                images: [
+                "unsplash.com",
+                "unsplash.com"
+                ]
+                }
+
+            };
+                let currentImgIndex = 0;
+                let activeObjId = '';
+                function stopPropagation(e) {
+                e.stopPropagation();
+                }
+                // SELECCIONAR OBJETO Y ACTIVAR ZOOM 3D
+                function selectObject(id) {
+                const data = universeData[id];
+                if (!data) return;
+                activeObjId = id;
+                currentImgIndex = 0;
+                // Actualizar textos e imágenes
+                document.getElementById('info-title').innerText = data.title;
+                document.getElementById('info-type').innerText = data.type;
+                document.getElementById('info-text').innerText = data.text;
+                document.getElementById('data-dist').innerText = data.dist;
+                document.getElementById('data-temp').innerText = data.temp;
+                const imgEl = document.getElementById('current-cosmic-img');
+                imgEl.src = data.images[0];
+                imgEl.style.transform = "rotateY(0deg)";
+                // Desplegar Sidebar dinámicamente si estaba cerrado
+                document.getElementById('sidebar').classList.add('forced-open');
+                // Lanzar Zoom Cinematográfico
+                document.getElementById('zoom-overlay').classList.add('active');
+                document.getElementById('space-stage').classList.add('zoomed');
+            }
+                // ROTACIÓN DE IMÁGENES TIPO 3D EN SENTIDO HORARIO
+                function rotateImage() {
+                const data = universeData[activeObjId];
+                if (!data) return;
+                currentImgIndex = (currentImgIndex + 1) % data.images.length;
+                const imgEl = document.getElementById('current-cosmic-img');
+                // Animación mecánica fluida de rotación 3D
+                imgEl.style.transform = "rotate(360deg) scale(0.9)";
+                imgEl.style.opacity = "0.5";
+                setTimeout(() => {
+                imgEl.src = data.images[currentImgIndex];
+                imgEl.style.transform = "rotate(0deg) scale(1)";
+                imgEl.style.opacity = "1";
+                }, 300);
+            }
+                function closeZoom() {
+                document.getElementById('zoom-overlay').classList.remove('active');
+                document.getElementById('space-stage').classList.remove('zoomed');
+                document.getElementById('sidebar').classList.remove('forced-open');
+                }
+                // BUSCADOR EN TIEMPO REAL
+                function filterSearch() {
+                const query = document.getElementById('search-bar').value.toLowerCase().trim();
+                const menuItems = document.querySelectorAll('#menu-list li');
+                menuItems.forEach(item => {
+                if (item.classList.contains('menu-section')) return; // Saltar títulos
+                const name = item.getAttribute('data-name');
+                if (name && name.includes(query)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+                }
+                });
+                }

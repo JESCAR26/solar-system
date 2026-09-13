@@ -1,0 +1,400 @@
+/* ==========================================================================
+   RESET CONFIGURACIONES BÁSICAS
+   ========================================================================== */
+* {
+    margin: 15;
+    padding: 15;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+    background-color: #030308;
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   FONDO DE ESTRELLAS (OPACIDAD VARIABLE DE 0.5 A 1.3)
+   ========================================================================== */
+.stars-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.stars, .stars2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    animation: atmosphericTwinkle 6s ease-in-out infinite alternate;
+}
+
+.stars2 {
+    background-size: 400px 400px, 200px 200px, 600px 600px;
+    animation-duration: 2s;
+    animation-delay: 0.5s;
+}
+
+@keyframes atmosphericTwinkle {
+    0% { 
+        opacity: 0.1; 
+        filter: drop-shadow(0 0 1px rgba(255,255,255,0.4)); 
+    }
+    50% { 
+        opacity: 0.3; 
+    }
+    100% { 
+        opacity: 0.5; 
+        filter: drop-shadow(0 0 4px rgba(255,255,255,1)); 
+    }
+}
+
+/* ==========================================================================
+   BARRA DE BÚSQUEDA RÁPIDA
+   ========================================================================== */
+.search-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    width: 40%;
+    min-width: 320px;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 14px 20px;
+    background: rgba(10, 15, 30, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 150, 255, 0.4);
+    border-radius: 30px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+#search-bar:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+    background: rgba(10, 15, 30, 0.9);
+}
+
+/* ==========================================================================
+   SIDEBAR FLEXIBLE E INTERACTIVO
+   ========================================================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 300px;
+    height: 100%;
+    background: rgba(5, 8, 20, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(0, 150, 255, 0.2);
+    transition: left 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+    z-index: 200;
+    padding: 30px 20px;
+}
+
+.sidebar:hover, .sidebar.forced-open {
+    left: 0;
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.sidebar::after {
+    content: "➔ MENÚ CÓSMICO";
+    position: absolute;
+    right: -36px;
+    top: 90px;
+    background: rgba(5, 8, 20, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #00bfff;
+    padding: 12px 6px;
+    border: 1px solid rgba(0, 150, 255, 0.2);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    writing-mode: vertical-rl;
+    font-size: 10px;
+    letter-spacing: 3px;
+    cursor: pointer;
+}
+
+.sidebar-header h3 {
+    color: #00ffcc;
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.sidebar-menu { 
+    list-style: none; 
+    overflow-y: auto; 
+    height: calc(100% - 60px); 
+}
+
+.menu-section { 
+    font-size: 11px; 
+    color: #5f758a; 
+    margin: 20px 0 8px 5px; 
+    letter-spacing: 2px; 
+    text-transform: uppercase;
+}
+
+.sidebar-menu button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #a3b8cc;
+    text-align: left;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu button:hover {
+    background: rgba(0, 255, 204, 0.1);
+    color: #ffffff;
+    padding-left: 15px;
+}
+
+/* ==========================================================================
+   ESCENARIO ESPACIAL Y EFECTO DE ROTACIÓN 3D
+   ========================================================================== */
+.space-stage {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1.2s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 0.8s ease;
+    z-index: 5;
+}
+
+.space-stage.zoomed {
+    transform: scale(2.5) rotate(-15deg);
+    opacity: 0.15;
+}
+
+/* Simulador esférico con perspectiva de textura envolvente */
+.sphere3d {
+    border-radius: 50%;
+    background-size: cover;
+    background-repeat: repeat-x;
+    box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 20px rgba(255,255,255,0.1);
+    animation: planetRotation 25s linear infinite;
+    cursor: pointer;
+}
+
+@keyframes planetRotation {
+    0% { background-position: 0 0; transform: rotate(0deg); }
+    100% { background-position: -200% 0; transform: rotate(360deg); }
+}
+
+.solar-system {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sun {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    box-shadow: inset 0 0 40px #ffd900, 0 0 60px #ff7700;
+    backgraound: radial-gradient (circle at 25% 25%, #ff8c00 );
+    z-index: 10;
+}
+
+/* Órbitas mecánicas */
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(26, 1, 1, 0.08);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.planet { 
+    position: absolute; 
+    top: -10px; 
+}
+
+/* Configuración de distancias y tiempos de traslación */
+.mercury-orbit { width: 160px; height: 160px; animation: spin 8s linear infinite; }
+.mercury { width: 20px; height: 20px;box-shadow: inset 0 0 20px #ca7a12, 0 0 60px #ff7700;
+    backgraound: radial-gradient (circle at 30% 30%, #ff8c000f );
+    z-index: 10; }
+
+.venus-orbit { width: 240px; height: 240px; animation: spin 16s linear infinite; }
+.venus { width: 22px; height: 22px; box-shadow: inset 0 0 20px #ffd900, 0 0 60px #ff7700;
+    backgraound: radial-gradient (circle at 30% 30%, #ff8c00 );
+    z-index: 10;}
+
+.earth-orbit { width: 340px; height: 340px; animation: spin 24s linear infinite; }
+.earth { width: 26px; height: 26px; box-shadow: inset 0 0 20px #26ff00, 0 0 60px #12add4;
+    backgraound: radial-gradient (circle at 30% 30%, #16a4dc );
+    z-index: 10;}
+
+.mars-orbit { width: 440px; height: 440px; animation: spin 32s linear infinite; }
+.mars { width: 20px; height: 20px; box-shadow: inset 0 0 20px #d76c07, 0 0 60px #d95f09;
+    backgraound: radial-gradient (circle at 30% 30%, #ff8c00 );
+    z-index: 10;}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   CAPA INTERACTIVA DE ZOOM CINEMATOGRÁFICO
+   ========================================================================== */
+.zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background: rgba(2, 3, 7, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    padding: 40px;
+}
+
+.zoom-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.back-btn {
+    position: absolute;
+    top: 100px;
+    left: 340px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.back-btn:hover { 
+    background: #ff3366; 
+    border-color: transparent;
+}
+
+.interactive-viewer {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    max-width: 1100px;
+    width: 100%;
+    margin-top: 60px;
+}
+
+/* VISOR DE IMÁGENES ROTATIVO 3D (SENTIDO HORARIO) */
+.image-viewer-3d {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.image-viewer-3d img {
+    width: 380px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: inset -20px -20px 50px #000, 0 0 50px rgba(0, 191, 255, 0.4);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.rotation-hint {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #00ffcc;
+    letter-spacing: 1px;
+}
+
+/* CUADRO DE TEXTO INTERACTIVO CON TRANSPARENCIA (GLASSMORPHISM) */
+.glass-info-panel {
+    flex: 1;
+    background: rgba(10, 18, 42, 0.45); /* Nivel de transparencia equilibrado */
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.glass-info-panel h2 {
+    font-size: 36px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.glass-info-panel p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #d1dbe5;
+    margin-bottom: 30px;
+}
+
+.object-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    font-size: 14px;
+}
+
+.object-data strong { 
+    color: #00bfff; 
+}
