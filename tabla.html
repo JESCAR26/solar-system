@@ -21,9 +21,11 @@
 
     <!-- SIDEBAR INTERACTIVO DESPLEGABLE -->
     <nav class="sidebar" id="sidebar">
+       
         <div class="sidebar-header">
             <h3> ORBIT</h3>
         </div>
+
         <ul class="sidebar-menu" id="menu-list">
             <li class="menu-section" data-section="estrellas">Estrellas y Núcleos</li>
             <li data-name="sol"><button onclick="selectObject('sol')">El Sol</button></li>
@@ -51,17 +53,22 @@
     <main class="space-stage" id="space-stage">
         <div class="solar-system" id="solar-system">
             <!-- Sol Esférico 3D -->
-            <div class="sun sphere3d" onclick="selectObject('sol')" style="background-image: url('https://unsplash.com');"></div>
+           <div class="sun sphere3d" onclick="selectObject('sol')" style="background-image: url('https://assets.science.nasa.gov/content/dam/science/cds/ciencia/sistema-solar/2025/5-2-2024_2000_to_5-3-2024_1034_171-131.2024-05-03_07_24_21.gif');"></div>
             
             <!-- Órbitas y Planetas con texturas simuladas -->
             <div class="orbit mercury-orbit">
-                <div class="planet mercury sphere3d" onclick="stopPropagation(event); selectObject('mercurio')" style="background-image: url('https://unsplash.com');"></div>
+                <div class="planet mercury sphere3d" onclick="stopPropagation(event); selectObject('mercurio')" style="background-image: url('https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUycmM3NmJwcTk0am9neXowaHNnMmJobDlnNTJnaXV2NGs4dDNtNTJxbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/108bNXja5KRrkA/giphy.gif');"></div>
+            </div>
+            <div class="orbit jupiter-orbit">
+                <div class="planet jupiter sphere3d" onclick="stopPropagation(event); selectObject('jupiter')" style="background-image: url('https://unsplash.com');"></div>
             </div>
             <div class="orbit venus-orbit">
                 <div class="planet venus sphere3d" onclick="stopPropagation(event); selectObject('venus')" style="background-image: url('https://unsplash.com');"></div>
             </div>
             <div class="orbit earth-orbit">
-                <div class="planet earth sphere3d" onclick="stopPropagation(event); selectObject('tierra')" style="background-image: url('https://unsplash.com');"></div>
+                <div class="planet earth sphere3d"
+                    onclick="stopPropagation(event); selectObject('tierra')">
+                </div>
             </div>
             <div class="orbit mars-orbit">
                 <div class="planet mars sphere3d" onclick="stopPropagation(event); selectObject('marte')" style="background-image: url('https://unsplash.com');"></div>
@@ -102,17 +109,16 @@
                 text: "Nuestra estrella es una esfera casi perfecta de plasma de alta temperatura, tejida por campos magnéticos. Sostiene mecánicamente todo el sistema planetario.",
                 dist: "0 UA (Centro)", temp: "5,500 °C (Superficie)",
                 images: [
-                    "https://unsplash.com",
-                    "https://unsplash.com"
-                ]
-            },
+                    "https://assets.science.nasa.gov/content/dam/science/cds/ciencia/sistema-solar/2025/5-2-2024_2000_to_5-3-2024_1034_171-131.2024-05-03_07_24_21.gif",
+                    "https://assets.science.nasa.gov/content/dam/science/cds/ciencia/sistema-solar/2025/5-2-2024_2000_to_5-3-2024_1034_171-131.2024-05-03_07_24_21.gif"
+                ]            },
             mercurio: {
                 title: "Mercurio", type: "Planeta Rocoso",
                 text: "El planeta más cercano al Sol. Es apenas mayor que la Luna terrestre. Carece casi por completo de atmósfera, exponiéndose a impactos constantes de meteoritos.",
                 dist: "0.39 UA del Sol", temp: "-180 °C a 430 °C",
                 images: [
-                    "https://unsplash.com",
-                    "https://unsplash.com"
+                    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHdidDM0b3h6ZnBkeDl6Mm92bmt2andlanFhMG43eWJma3BsNTE1OSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0HlO4V8iCRME3i0g/giphy.gif",
+                    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHdidDM0b3h6ZnBkeDl6Mm92bmt2andlanFhMG43eWJma3BsNTE1OSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0HlO4V8iCRME3i0g/giphy.gif"
                 ]
             },
             venus: {
@@ -120,16 +126,18 @@
                 text: "Gemelo infernal de la Tierra debido a su tamaño similar pero envuelto en una atmósfera sofocante de dióxido de carbono que genera presiones y calores extremos.",
                 dist: "0.72 UA del Sol", temp: "465 °C constante",
                 images: [
-                    "https://unsplash.com",
-                    "https://unsplash.com"
+                    "https://upload.wikimedia.org/wikipedia/commons/0/0e/Venus_Rotation_Movie.gif?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=original",
+                    "https://upload.wikimedia.org/wikipedia/commons/0/0e/Venus_Rotation_Movie.gif?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=original"
                 ]
             },
             tierra: {
                 title: "La Tierra", type: "Planeta Rocoso Habitável",
                 text: "El único oasis biológico conocido en el cosmos. Su escudo magnético y su atmósfera rica en nitrógeno y oxígeno protegen una vasta biosfera dependiente del agua.",
                 dist: "1.00 UA (150M km)", temp: "15 °C promedio",
-                images: <img src="img/tierra.png " alt=" "> 
-                </img>
+                images: [
+                    "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/EpicEarth-Globespin%282016May29%29.gif/960px-EpicEarth-Globespin%282016May29%29.gif?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail",
+                    "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/EpicEarth-Globespin%282016May29%29.gif/960px-EpicEarth-Globespin%282016May29%29.gif?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail"
+                ]
                 
             },
             marte: {
@@ -137,8 +145,8 @@
                 text: "Un desierto gélido rico en óxido de hierro. Aloja llanuras masivas y los cañones más profundos conocidos. Meta principal de la exploración astrobiológica actual.",
                 dist: "1.52 UA del Sol", temp: "-62 °C",
                 images: [
-                    "https://unsplash.com",
-                    "https://unsplash.com"
+                    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWU0eWswYm5hOWUxdmlucWI1Z2g4OTVrcDU1Ym1zaTU5OTE4eHBsOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/J2WSNk9IQlxJ0S37wb/giphy.gif",
+                    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWU0eWswYm5hOWUxdmlucWI1Z2g4OTVrcDU1Ym1zaTU5OTE4eHBsOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/J2WSNk9IQlxJ0S37wb/giphy.gif"
                 ]
             },
             jupiter: {
@@ -146,8 +154,8 @@
                 text: "Un titán compuesto de hidrógeno y helio. Ejerce una influencia gravitatoria colosal, actuando como un escudo protector para los planetas interiores.",
                 dist: "5.20 UA del Sol", temp: "-108 °C",
                 images: [
-                    "https://unsplash.com",
-                    "https://unsplash.com"
+                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMDVlbGx4NGFiOTd1YTRwY3VrM3hqY3F5NXNyNmlzYWN0bHRyMTY4bSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e6l0YRVArTH8I/source.gif",
+                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMDVlbGx4NGFiOTd1YTRwY3VrM3hqY3F5NXNyNmlzYWN0bHRyMTY4bSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e6l0YRVArTH8I/source.gif"
                 ]
             },
             saturno: {
@@ -155,8 +163,8 @@
                 text: "Reconocido por sus complejos y resplandecientes anillos formados por fragmentos de hielo y rocas espaciales que orbitan de forma sincronizada.",
                 dist: "9.58 UA del Sol", temp: "-139 °C",
                 images: [
-                    "https://unsplash.com",
-                    "https://unsplash.com"
+                    "https://media.tenor.com/X41MtjA-OJUAAAAM/mercury-space.gif",
+                    "https://media.tenor.com/X41MtjA-OJUAAAAM/mercury-space.gif"
                 ]
             },
             luna: {
@@ -164,8 +172,8 @@
                 text: "Socio gravitacional de la Tierra, responsable de estabilizar la inclinación de nuestro eje planetario y producir los ciclos de mareas oceánicas.",
                 dist: "384,400 km de la Tierra", temp: "-130 °C a 120 °C",
                 images: [
-                "unsplash.com",
-                "unsplash.com"
+                        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGdpMmxjcXJ3dGtsaXVlanY2MTlxZTFpa2ZndDI3OGF0ZXI5ZHY3ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/i1iA5wwEuRQNq/giphy.gif",
+                        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGdpMmxjcXJ3dGtsaXVlanY2MTlxZTFpa2ZndDI3OGF0ZXI5ZHY3ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/i1iA5wwEuRQNq/giphy.gif"
                 ]
   
             },
@@ -250,9 +258,9 @@
                 }, 300);
             }
                 function closeZoom() {
-                document.getElementById('zoom-overlay').classList.remove('active');
-                document.getElementById('space-stage').classList.remove('zoomed');
-                document.getElementById('sidebar').classList.remove('forced-open');
+                    document.getElementById('zoom-overlay').classList.remove('active');
+                    document.getElementById('space-stage').classList.remove('zoomed');
+                    document.getElementById('sidebar').classList.remove('forced-open');
                 }
                 // BUSCADOR EN TIEMPO REAL
                 function filterSearch() {
@@ -263,8 +271,14 @@
                 const name = item.getAttribute('data-name');
                 if (name && name.includes(query)) {
                 item.style.display = "block";
-            } else {
-                item.style.display = "none";
+                } else {
+                    item.style.display = "none";
                 }
                 });
                 }
+
+
+    </script>
+
+</body>
+</html>
