@@ -288,7 +288,7 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.6s ease;
-    padding: 40px;
+    padding: 50px;
 }
 
 .zoom-overlay.active {
@@ -398,3 +398,4 @@ body {
 .object-data strong { 
     color: #00bfff; 
 }
+
